@@ -106,7 +106,7 @@ for i=1:10000 % we will look into 10000 generations
                 if Population(targetg,targeti)==Population(targetg,randgenselector)
                     goodcross=true;
                 else
-                    if not(ismember(Population(targetg,targeti),Population(:,randgenselector))) & ...
+                    if not(ismember(Population(targetg,targeti),Population(:,randgenselector))) && ...
                             not(ismember(Population(targetg,randgenselector),Population(:,targeti)))
                         aux=Population(targetg,targeti);
                         Population(targetg,targeti)=Population(targetg,randgenselector);

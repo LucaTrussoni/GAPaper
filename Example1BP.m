@@ -45,12 +45,12 @@ for i=1:10000 % We will look into 10000 generations
     randgenselector=ceil(rand()*499)+1;
     % The selected individual will die (step (b) of alg. in the paper) and
     % will be replaced by the strongest
-    if randselector<pdeath 
+    if randselector<pdeath
         Population(:,randgenselector)=Population(:,1);
     % The selected individual will fight against another and the stronger
     % individual will replace the weaker (step (c) of alg.)
     elseif randselector<pdeath+pfight
-        target=ceil(rand()*500); 
+        target=ceil(rand()*500);
         winner=randgenselector;
         if Fitness(randgenselector)<Fitness(target)
             winner=target;
@@ -67,12 +67,12 @@ for i=1:10000 % We will look into 10000 generations
             % the mutation was not present in the original individual)
             goodmut=false;
             while not(goodmut)
-                target=ceil(rand()*10000); 
+                target=ceil(rand()*10000);
                 goodmut=not(ismember(target,Population(:,randgenselector)));
             end
             Population(ceil(rand()*100),randgenselector)=target;
         end
-    % Last option, the selected individual will go into a crossover, step (e)    
+    % Last option, the selected individual will go into a crossover, step (e)
     else
         % We need a second individual for the crossover, and we make sure
         % it is different from the first one. We also make sure we are not
@@ -81,12 +81,12 @@ for i=1:10000 % We will look into 10000 generations
         while not(goodtarget)
             targeti=ceil(rand()*499)+1;
             goodtarget=(targeti~=randgenselector);
-        end 
+        end
         % we will exchange genicross genes
         for j=1:genicross
             % a gene is good for the exchange if it does not create repetitions.
             % This happens if: 1-the two genes point to the same
-            % realization in the pool or 2-the realization in the pool that is 
+            % realization in the pool or 2-the realization in the pool that is
             % pointed to by the gene of intividual A is not already in
             % individual B genoma and vice versa
             goodcross=false;
@@ -95,7 +95,7 @@ for i=1:10000 % We will look into 10000 generations
                 if Population(targetg,targeti)==Population(targetg,randgenselector)
                     goodcross=true;
                 else
-                    if not(ismember(Population(targetg,targeti),Population(:,randgenselector))) & ...
+                    if not(ismember(Population(targetg,targeti),Population(:,randgenselector))) && ...
                             not(ismember(Population(targetg,randgenselector),Population(:,targeti)))
                         aux=Population(targetg,targeti);
                         Population(targetg,targeti)=Population(targetg,randgenselector);
@@ -103,7 +103,7 @@ for i=1:10000 % We will look into 10000 generations
                         goodcross=true;
                     end
                 end
-            end    
+            end
         end
     end
     % Update fitness
