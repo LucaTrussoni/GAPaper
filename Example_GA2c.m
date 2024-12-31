@@ -1,4 +1,4 @@
-% Example 2: we will look in vectors of random variable that are used
+% Example 3: we will look in vectors of random variable that are used
 % to simulate a an Orstein-Uhlembeck process (the random part of a Vasicek
 % IR model). The process has equation dx=-a x dt + sigma dW. Again, we will
 % simulate the process for 1 year (twelve monthly steps).We have a 10000
@@ -24,7 +24,7 @@ for i=1:Nper
 end
 % Creation of pools of terminal results of the simulations
 X_Big_CashAccount=exp(sum(X_Big,2)*dt);
-X_Big_Rendimenti=log(X_Big_CashAccount);
+X_Big_Yields=log(X_Big_CashAccount);
 % Expected values for cash account and volatility of terminal results of
 % simulations (see Brigo-Mercurio book)
 sigma_CA=sigma/a*(TimeLength-2*(1-exp(-a*TimeLength))/a+(1-exp(-2*a*TimeLength))/(2*a))^0.5;
@@ -42,7 +42,7 @@ end
 % Initialize fitness: our goal is to find an individual whose statistics
 % are close to theoretical values of mean and variance
 MeansOfPopulation=mean(X_Big_CashAccount(Population));
-StDevsOfPopulation=std(X_Big_Rendimenti(Population),1);
+StDevsOfPopulation=std(X_Big_Yields(Population),1);
 w1=100;
 w2=10;
 Fitness=w1*(MeansOfPopulation-mean_CA).^2+w2*(StDevsOfPopulation-sigma_CA).^2;
@@ -134,7 +134,7 @@ for i=1:20000 % This time we will look into 20000 generations
     end
     % Updating fitness
     MeansOfPopulation=mean(X_Big_CashAccount(Population));
-    StDevsOfPopulation=std(X_Big_Rendimenti(Population),1);
+    StDevsOfPopulation=std(X_Big_Yields(Population),1);
     Fitness=w1*(MeansOfPopulation-mean_CA).^2+w2*(StDevsOfPopulation-sigma_CA).^2;
     if (Fitness(1)~=Res(i))
         disp(Fitness(1));
@@ -146,10 +146,10 @@ for i=1:20000 % This time we will look into 20000 generations
 end
 % As usual, a couple of plots to look into population
 subplot(1,2,1)
-normplot(X_Big_Rendimenti(Population(:,1)))
+normplot(X_Big_Yields(Population(:,1)))
 subplot(1,2,2)
-histfit(X_Big_Rendimenti(Population(:,1)),10)
+histfit(X_Big_Yields(Population(:,1)),10)
 figure()
 plot(X_Big(Population(:,1),:)')
 disp(mean(X_Big_CashAccount(Population(:,1))))
-disp(std(X_Big_Rendimenti(Population(:,1)),1))
+disp(std(X_Big_Yields(Population(:,1)),1))
