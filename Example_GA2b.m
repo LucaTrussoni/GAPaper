@@ -80,7 +80,7 @@ for i=1:10000 % we will look into 10000 generations
                 target=ceil(rand()*10000);
                 goodmut=not(ismember(target,Population(:,randgenselector)));
             end
-            % Il target � un nuovo elemento
+            % Target is a new element
             Population(ceil(rand()*100),randgenselector)=target;
         end
     % Last option, the selected individual will go into a crossover, step (e)
