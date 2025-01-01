@@ -7,8 +7,8 @@ r=0.04;
 dt=1/Nper;
 X_Big_Processes=r*dt+randn(10000,Nper)*sigma*(dt^0.5)-0.5*(sigma^2)*dt;
 % twelve monthly returns, tannual rate 4%, volatility 15%
-X_Big_Rendimenti=sum(X_Big_Processes,2);
-X_Big_CashAccount=exp(X_Big_Rendimenti);
+X_Big_Yields=sum(X_Big_Processes,2);
+X_Big_CashAccount=exp(X_Big_Yields);
 Population=ceil(rand(100,500)*10000);
 % make sure all vectors are individuals
 for i=1:500
@@ -18,9 +18,9 @@ for i=1:500
 end
 % 1000 individuals with 100 genes each
 MeanPopulation=mean(X_Big_CashAccount(Population));
-StDevPopulation=std(X_Big_Rendimenti(Population),1);
-SkewPopulation=skewness(X_Big_Rendimenti(Population)/sigma,1);
-KurtPopulation=kurtosis(X_Big_Rendimenti(Population)/sigma,1)-3;
+StDevPopulation=std(X_Big_Yields(Population),1);
+SkewPopulation=skewness(X_Big_Yields(Population)/sigma,1);
+KurtPopulation=kurtosis(X_Big_Yields(Population)/sigma,1)-3;
 w1=125;
 w2=100;
 w3=10;
@@ -112,9 +112,9 @@ for i=1:20000 % epochs
     end
     % Updating fitness
     MeanPopulation=mean(X_Big_CashAccount(Population));
-    StDevPopulation=std(X_Big_Rendimenti(Population),1);
-    SkewPopulation=skewness(X_Big_Rendimenti(Population)/sigma,1);
-    KurtPopulation=kurtosis(X_Big_Rendimenti(Population)/sigma,1)-3;
+    StDevPopulation=std(X_Big_Yields(Population),1);
+    SkewPopulation=skewness(X_Big_Yields(Population)/sigma,1);
+    KurtPopulation=kurtosis(X_Big_Yields(Population)/sigma,1)-3;
     % New fitness with highest moments
     Fitness=w1*(MeanPopulation-exp(r)).^2+w2*(StDevPopulation-sigma).^2+w3*SkewPopulation.^2+w4*KurtPopulation.^2;
     if (Fitness(1)~=Res(i))

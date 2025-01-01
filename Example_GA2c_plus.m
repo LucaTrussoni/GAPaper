@@ -68,25 +68,25 @@ for i=1:20000 % This time we will look into 20000 generations
     % the event and randgenselector, the gene of the individual that will
     % be changed in the event. It is (almost) like multiplying event
     % probabilities by 1/500 (step (a) of alg. in the paper)
-    caso=rand();
-    icaso=ceil(rand()*499)+1; % step (a)
+    randselector=rand();
+    randgenselector=ceil(rand()*499)+1; % step (a)
     % The selected individual will die (step (b) of alg. in the paper) and
     % will be replaced by the strongest
-    if caso<pdeath
-        Population(:,icaso)=Population(:,1);
-    elseif caso<pdeath+pfight
+    if randselector<pdeath
+        Population(:,randgenselector)=Population(:,1);
+    elseif randselector<pdeath+pfight
     % The selected individual will fight against another and the stronger
     % individual will replace the weaker (step (c) of alg.)
         target=ceil(rand()*500);
-        winner=icaso;
-        if Fitness(icaso)<Fitness(target)
+        winner=randgenselector;
+        if Fitness(randgenselector)<Fitness(target)
             winner=target;
         end
         winnerG=Population(:,winner);
-        Population(:,icaso)=winnerG;
+        Population(:,randgenselector)=winnerG;
         Population(:,target)=winnerG;
     % The selected individual will mutate (step (d) of alg.)
-    elseif caso<pdeath+pfight+pmut % Mutazione, step (d)
+    elseif randselector<pdeath+pfight+pmut % Mutazione, step (d)
         % Mutation will touch genimut genes
         for j=1:genimut
             % A mutation is good if it does not create a repetition in the
@@ -95,10 +95,10 @@ for i=1:20000 % This time we will look into 20000 generations
             goodmut=false;
             while not(goodmut)
                 target=ceil(rand()*10000); % valore del gene mutato
-                goodmut=not(ismember(target,Population(:,icaso))); % check ammissibilit� mutazione
+                goodmut=not(ismember(target,Population(:,randgenselector))); % check ammissibilit� mutazione
             end
             % Targer is a new element
-            Population(ceil(rand()*100),icaso)=target; % la mutazione � eseguita quando ammissibile
+            Population(ceil(rand()*100),randgenselector)=target; % la mutazione � eseguita quando ammissibile
         end
     % Last option, the selected individual will go into a crossover, step (e)
     else
@@ -108,7 +108,7 @@ for i=1:20000 % This time we will look into 20000 generations
         goodtarget=false;
         while not(goodtarget)
             targeti=ceil(rand()*499)+1;
-            goodtarget=(targeti~=icaso);
+            goodtarget=(targeti~=randgenselector);
         end
         % we will exchange genicross genes
         for j=1:genicross
@@ -120,14 +120,14 @@ for i=1:20000 % This time we will look into 20000 generations
             % individual B genoma and vice versa
             while not(goodcross)
                 targetg=ceil(rand()*100);
-                if Population(targetg,targeti)==Population(targetg,icaso)
+                if Population(targetg,targeti)==Population(targetg,randgenselector)
                     goodcross=true;
                 else
-                    if not(ismember(Population(targetg,targeti),Population(:,icaso))) && ...
-                            not(ismember(Population(targetg,icaso),Population(:,targeti)))
+                    if not(ismember(Population(targetg,targeti),Population(:,randgenselector))) && ...
+                            not(ismember(Population(targetg,randgenselector),Population(:,targeti)))
                         aux=Population(targetg,targeti);
-                        Population(targetg,targeti)=Population(targetg,icaso);
-                        Population(targetg,icaso)=aux;
+                        Population(targetg,targeti)=Population(targetg,randgenselector);
+                        Population(targetg,randgenselector)=aux;
                         goodcross=true;
                     end
                 end
